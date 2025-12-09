@@ -8,13 +8,24 @@ export default function Mcards({ movie }) {
 
   function  onFavoriteClick(e) {
     e.preventDefault()
+    e.stopPropagation()
     if (favorite) removeFromFavorites(movie.id)
     else addToFavorites(movie)
   }
 
+  function handleMovieClick() {
+    const movieTitle = (movie?.title || '')
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-zA-Z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+    window.open(`https://ev01.to/search/${movieTitle}`, '_blank')
+  }
+
   return (
     <div className="movie-card">
-      <div className="movie-poster">
+      <div className="movie-poster" onClick={handleMovieClick} style={{ cursor: 'pointer' }}>
         <img src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`} alt={movie?.title || "Movie Poster"} />
         <div className="movie-overlay">
         <button className={`favorite-btn ${favorite ? "active" : ""}`} onClick={onFavoriteClick}>
